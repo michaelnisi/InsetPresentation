@@ -1,3 +1,3 @@
 # InsetPresentation
 
-A description of this package.
+Custom modaly view controller presenation, blatantly snatched from [Daniel Gauthier](https://danielgauthier.me/2020/02/24/indie5-1.html).
