@@ -22,6 +22,18 @@ The InsetPresentation Swift package provides modal presentation, blatantly snatc
 +---------------------+
 ```
 
+## Example
+
+Example call site might look like this.
+
+```swift
+let insets = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
+
+self?.present(vc, interactiveDismissalType: .vertical, insets: insets) {
+  completion?()
+}
+```
+
 ## Install
 
 📦 Add `https://github.com/michaelnisi/InsetPresentation` to your package manifest.
