@@ -3,9 +3,17 @@ import UIKit
 class InsetTransitionController: NSObject {
   
   private var interactionController: InteractionControlling?
+  private let insets: UIEdgeInsets
+  private let cornerRadius: CGFloat
   
-  init(interactionController: InteractionControlling?) {
+  init(
+    interactionController: InteractionControlling?,
+    insets: UIEdgeInsets = .zero,
+    cornerRadius: CGFloat = .zero
+  ) {
     self.interactionController = interactionController
+    self.insets = insets
+    self.cornerRadius = cornerRadius
   }
 }
 
@@ -16,7 +24,11 @@ extension InsetTransitionController: UIViewControllerTransitioningDelegate {
     presenting: UIViewController?,
     source: UIViewController
   ) -> UIPresentationController? {
-    InsetPresentationController(presentedViewController: presented, presenting: presenting)
+    let controller = InsetPresentationController(presentedViewController: presented, presenting: presenting)
+    controller.insets = insets
+    controller.cornerRadius = cornerRadius
+    
+    return controller
   }
   
   func animationController(

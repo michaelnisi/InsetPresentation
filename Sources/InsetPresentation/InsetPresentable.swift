@@ -32,23 +32,29 @@ protocol InteractionControlling: UIViewControllerInteractiveTransitioning {
 public extension UIViewController {
   enum InteractiveDismissalType {
     case none
-    case standard
+    case vertical
   }
   
   func present(
     _ viewController: InsetPresentable,
     interactiveDismissalType: InteractiveDismissalType,
+    insets: UIEdgeInsets = .zero,
+    cornerRadius: CGFloat = .zero,
     completion: (() -> Void)? = nil
   ) {
     let interactionController: InteractionControlling?
     switch interactiveDismissalType {
     case .none:
       interactionController = nil
-    case .standard:
+    case .vertical:
       interactionController = InsetInteractionController(viewController: viewController)
     }
     
-    let transitionManager = InsetTransitionController(interactionController: interactionController)
+    let transitionManager = InsetTransitionController(
+      interactionController: interactionController,
+      insets: insets,
+      cornerRadius: cornerRadius
+    )
     viewController.transitionController = transitionManager
     viewController.transitioningDelegate = transitionManager
     viewController.modalPresentationStyle = .custom

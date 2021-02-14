@@ -1,8 +1,8 @@
 import UIKit
 
 class InsetPresentationController: UIPresentationController {
-  var insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-  var cornerRadius: CGFloat = 0
+  var insets: UIEdgeInsets = .zero
+  var cornerRadius: CGFloat = .zero
   
   lazy var dimming: UIView = {
     let dimming = UIView()
