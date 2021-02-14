@@ -20,7 +20,7 @@ The InsetPresentation Swift package provides modal presentation, blatantly snatc
 |  +---------------+  |
 |                     |
 +---------------------+
-
+```
 
 ## Install
 
