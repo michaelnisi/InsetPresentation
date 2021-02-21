@@ -85,7 +85,7 @@ extension InsetPresentationController {
     frame.origin.x += 0
     frame.origin.y += insets.top
     frame.size.width = targetSize.width
-    frame.size.height = targetSize.height
+    frame.size.height = targetSize.height + 20
     
     return frame
   }
