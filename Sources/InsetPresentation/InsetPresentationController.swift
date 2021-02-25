@@ -29,7 +29,7 @@ extension InsetPresentationController {
     }
     
     containerView.insertSubview(dimming, at: 0)
-    containerView.addGestureRecognizer(tapGesture)
+    dimming.addGestureRecognizer(tapGesture)
     
     NSLayoutConstraint.activate([
       dimming.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
