@@ -66,9 +66,9 @@ extension InsetPresentationController {
   override func containerViewWillLayoutSubviews() {
     presentedView?.frame = frameOfPresentedViewInContainerView
     presentedView?.layer.cornerRadius = cornerRadius
-    presentedView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    presentedView?.layer.maskedCorners = makeMaskedCorners()
   }
-  
+
   override var frameOfPresentedViewInContainerView: CGRect {
     guard let containerView = containerView else {
       return .zero
@@ -77,16 +77,24 @@ extension InsetPresentationController {
     let safeAreaFrame = containerView.bounds
     
     let targetSize = CGSize(
-      width: safeAreaFrame.width,
-      height: UIScreen.main.bounds.height - insets.top
+      width: safeAreaFrame.width - insets.left - insets.right,
+      height: safeAreaFrame.height - insets.top - insets.bottom
     )
     
     var frame = safeAreaFrame
-    frame.origin.x += 0
+    frame.origin.x += insets.left
     frame.origin.y += insets.top
     frame.size.width = targetSize.width
-    frame.size.height = targetSize.height + 20
+    frame.size.height = targetSize.height + (insets.bottom == 0 ? CGFloat(40) : 0)
     
     return frame
+  }
+}
+
+private extension InsetPresentationController {
+  func makeMaskedCorners() -> CACornerMask {
+    insets.bottom == 0 ?
+      [.layerMinXMinYCorner, .layerMaxXMinYCorner] :
+      [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
   }
 }
