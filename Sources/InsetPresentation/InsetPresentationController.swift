@@ -23,13 +23,18 @@ class InsetPresentationController: UIPresentationController {
 }
 
 extension InsetPresentationController {
+    func addDimmingTapGesture() {
+        dimming.addGestureRecognizer(tapGesture)
+    }
+}
+
+extension InsetPresentationController {
   override func presentationTransitionWillBegin() {
     guard let containerView = containerView else {
       return
     }
     
     containerView.insertSubview(dimming, at: 0)
-    dimming.addGestureRecognizer(tapGesture)
     
     NSLayoutConstraint.activate([
       dimming.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -49,7 +54,7 @@ extension InsetPresentationController {
   
   override func dismissalTransitionWillBegin() {
     defer {
-      containerView?.removeGestureRecognizer(tapGesture)
+      dimming.removeGestureRecognizer(tapGesture)
     }
     
     guard let coordinator = presentedViewController.transitionCoordinator else {
@@ -66,9 +71,9 @@ extension InsetPresentationController {
   override func containerViewWillLayoutSubviews() {
     presentedView?.frame = frameOfPresentedViewInContainerView
     presentedView?.layer.cornerRadius = cornerRadius
-    presentedView?.layer.maskedCorners = makeMaskedCorners()
+    presentedView?.layer.masksToBounds = true
   }
-
+  
   override var frameOfPresentedViewInContainerView: CGRect {
     guard let containerView = containerView else {
       return .zero
@@ -78,7 +83,7 @@ extension InsetPresentationController {
     
     let targetSize = CGSize(
       width: safeAreaFrame.width - insets.left - insets.right,
-      height: safeAreaFrame.height - insets.top - insets.bottom
+      height: UIScreen.main.bounds.height - insets.top - insets.bottom
     )
     
     var frame = safeAreaFrame
@@ -88,13 +93,5 @@ extension InsetPresentationController {
     frame.size.height = targetSize.height + (insets.bottom == 0 ? CGFloat(40) : 0)
     
     return frame
-  }
-}
-
-private extension InsetPresentationController {
-  func makeMaskedCorners() -> CACornerMask {
-    insets.bottom == 0 ?
-      [.layerMinXMinYCorner, .layerMaxXMinYCorner] :
-      [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
   }
 }
