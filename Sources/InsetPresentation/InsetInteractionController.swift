@@ -32,10 +32,6 @@ extension InsetInteractionController {
     view.removeGestureRecognizer(panGesture)
   }
   
-  @objc private func onContainerViewTap() {
-    viewController.dismiss(animated: true)
-  }
-  
   @objc func onPan(_ gestureRecognizer: VerticalPanGesture) {
     guard let superview = gestureRecognizer.view?.superview else {
       return

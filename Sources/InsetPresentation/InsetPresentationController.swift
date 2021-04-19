@@ -23,13 +23,18 @@ class InsetPresentationController: UIPresentationController {
 }
 
 extension InsetPresentationController {
+    func addDimmingTapGesture() {
+        dimming.addGestureRecognizer(tapGesture)
+    }
+}
+
+extension InsetPresentationController {
   override func presentationTransitionWillBegin() {
     guard let containerView = containerView else {
       return
     }
     
     containerView.insertSubview(dimming, at: 0)
-    dimming.addGestureRecognizer(tapGesture)
     
     NSLayoutConstraint.activate([
       dimming.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -49,7 +54,7 @@ extension InsetPresentationController {
   
   override func dismissalTransitionWillBegin() {
     defer {
-      containerView?.removeGestureRecognizer(tapGesture)
+      dimming.removeGestureRecognizer(tapGesture)
     }
     
     guard let coordinator = presentedViewController.transitionCoordinator else {
@@ -66,7 +71,7 @@ extension InsetPresentationController {
   override func containerViewWillLayoutSubviews() {
     presentedView?.frame = frameOfPresentedViewInContainerView
     presentedView?.layer.cornerRadius = cornerRadius
-    presentedView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    presentedView?.layer.masksToBounds = true
   }
   
   override var frameOfPresentedViewInContainerView: CGRect {
@@ -77,12 +82,12 @@ extension InsetPresentationController {
     let safeAreaFrame = containerView.bounds
     
     let targetSize = CGSize(
-      width: safeAreaFrame.width,
-      height: UIScreen.main.bounds.height - insets.top
+      width: safeAreaFrame.width - insets.left - insets.right,
+      height: UIScreen.main.bounds.height - insets.top - insets.bottom
     )
     
     var frame = safeAreaFrame
-    frame.origin.x += 0
+    frame.origin.x += insets.left
     frame.origin.y += insets.top
     frame.size.width = targetSize.width
     frame.size.height = targetSize.height + 20

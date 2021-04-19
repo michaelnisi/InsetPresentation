@@ -1,7 +1,6 @@
 import UIKit
 
 class InsetTransitionController: NSObject {
-  
   private var interactionController: InteractionControlling?
   private let insets: UIEdgeInsets
   private let cornerRadius: CGFloat
@@ -27,6 +26,10 @@ extension InsetTransitionController: UIViewControllerTransitioningDelegate {
     let controller = InsetPresentationController(presentedViewController: presented, presenting: presenting)
     controller.insets = insets
     controller.cornerRadius = cornerRadius
+
+    if interactionController != nil {
+        controller.addDimmingTapGesture()
+    }
     
     return controller
   }
